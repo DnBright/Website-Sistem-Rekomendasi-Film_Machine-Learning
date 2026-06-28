@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Sistem Rekomendasi Film KNN</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -188,7 +189,7 @@
             const errorText = document.getElementById('error-text');
             const template = document.getElementById('movie-card-template');
 
-            const FLASK_API_URL = 'http://127.0.0.1:5000/api/recommend';
+            const FLASK_API_URL = '/api/recommend'; // Menggunakan internal Laravel route sementara Python error
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -212,7 +213,8 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Accept': 'application/json'
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         },
                         body: JSON.stringify({
                             user_id: parseInt(userId),
